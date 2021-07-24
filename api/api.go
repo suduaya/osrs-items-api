@@ -28,7 +28,7 @@ func logTracing(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddyClient) *API {
+func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddyClient, port string) *API {
 	// Avoid "404 page not found".
 	router := mux.NewRouter()
 
@@ -61,11 +61,11 @@ func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddy
 
 	srv := &http.Server{
 		Handler: router,
-		Addr:    "127.0.0.1:8080",
+		Addr:    fmt.Sprintf(":%s", port),
 		// Timeouts
 		IdleTimeout:  120 * time.Second,
-		WriteTimeout: 1 * time.Second,
-		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 	}
 
 	itemManager := provision.ItemManager{
