@@ -14,7 +14,7 @@ This API extracts data from OSRS Grand Exchange and OSBuddy Exchange Tool and pr
     * Item Details (with the latest price information)
     * Price Variation
     ```
-    GET /items/2
+    GET https://osrs-items-api.herokuapp.com/items/2
     ```
     ```json
    {
@@ -50,7 +50,7 @@ This API extracts data from OSRS Grand Exchange and OSBuddy Exchange Tool and pr
    ```
 * List items (use *name* param for filtering)
  ```
- GET /items?name=yew lo
+ GET https://osrs-items-api.herokuapp.com/items?name=yew lo
  ```
  ```json
  [
