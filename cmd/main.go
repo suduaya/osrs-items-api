@@ -1,34 +1,16 @@
-package api
+package main
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"net/http"
-	"osrs-items-api/oldschoolrs"
-	"osrs-items-api/provision"
-	"osrs-items-api/rsbuddy"
+	"osrs-items-api/internal/items"
+	"osrs-items-api/pkg/oldschoolrs"
 	"time"
 
 	"github.com/gorilla/mux"
 )
 
-type API struct {
-	mux    *mux.Router
-	server *http.Server
-
-	ItemManager provision.ItemManager
-}
-
-// Middleware
-func logTracing(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Tracing request for %s\n", r.RequestURI)
-		next.ServeHTTP(w, r)
-	}
-}
-
-func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddyClient, port string) *API {
+func main() {
 	// Avoid "404 page not found".
 	router := mux.NewRouter()
 
@@ -59,6 +41,19 @@ func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddy
 			})
 		})
 
+	//port := os.Getenv("PORT")
+	port := "8080"
+
+	//rsbuddyClient := rsbuddy.New("https://rsbuddy.com/exchange/summary.json")
+	osClient := oldschoolrs.New("https://secure.runescape.com/m=itemdb_oldschool/api/graph")
+
+	items.NewAPI(
+		items.Config{
+			Router:            router,
+			OldschoolRsClient: osClient,
+		},
+	)
+
 	srv := &http.Server{
 		Handler: router,
 		Addr:    fmt.Sprintf(":%s", port),
@@ -67,31 +62,5 @@ func New(osrsClient oldschoolrs.OldschoolRsClient, rsbuddyClient rsbuddy.RSBuddy
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-
-	itemManager := provision.ItemManager{
-		OldschoolRsClient: osrsClient,
-		RSBuddyClient:     rsbuddyClient,
-	}
-
-	api := &API{
-		mux:    router,
-		server: srv,
-
-		ItemManager: itemManager,
-	}
-
-	router.HandleFunc("/items/{id}", logTracing(api.GetItemById)).Methods("GET")
-	router.HandleFunc("/items", logTracing(api.GetItemByName)).Methods("GET")
-
-	return api
-}
-
-func (t *API) Start() error {
-	fmt.Println("Starting..")
-	return t.server.ListenAndServe()
-}
-
-// Shutdown attempts to close the http server.
-func (t *API) Close() error {
-	return t.server.Shutdown(context.Background())
+	srv.ListenAndServe()
 }

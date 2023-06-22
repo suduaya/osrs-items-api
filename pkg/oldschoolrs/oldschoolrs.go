@@ -13,8 +13,8 @@ type OldschoolRsClient struct {
 	Host string
 }
 
-func New(apiUrl string) OldschoolRsClient {
-	return OldschoolRsClient{
+func New(apiUrl string) *OldschoolRsClient {
+	return &OldschoolRsClient{
 		Host: apiUrl,
 		Client: &http.Client{
 			Timeout: 30 * time.Second,
