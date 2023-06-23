@@ -25,7 +25,10 @@ func NewAPI(c Config) {
 func setRoutes(h *handler.Handler, router *mux.Router) {
 	r := router.PathPrefix("/v1").Subrouter()
 
-	r.HandleFunc("/items/{id}", logTracing(h.GetItemById)).Methods("GET")
+	r.HandleFunc(
+		"/items/{id}/price",
+		logTracing(h.GetItemPriceVariationById),
+	).Methods("GET")
 }
 
 // Middleware

@@ -15,16 +15,12 @@ func New(osrs *oldschoolrs.OldschoolRsClient) *Service {
 	}
 }
 
-func (s *Service) FindItemById(itemId int) (itemFull RunescapeItem, err error) {
+func (s *Service) GetItemPriceVariationById(itemId int) (oldschoolrs.ItemPriceRecord, error) {
 
 	price, err := s.OldschoolRsClient.FindItemPrice(itemId)
 	if err != nil {
-		return itemFull, fmt.Errorf("item with id: '%d' was not found", itemId)
+		return price, fmt.Errorf("item with id: '%d' was not found", itemId)
 	}
 
-	itemFull = RunescapeItem{
-		PriceVariation: price,
-	}
-
-	return itemFull, nil
+	return price, nil
 }

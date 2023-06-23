@@ -1,0 +1,53 @@
+definitions:
+  oldschoolrs.ItemPriceRecord:
+    properties:
+      average:
+        items:
+          $ref: '#/definitions/oldschoolrs.Price'
+        type: array
+      daily:
+        items:
+          $ref: '#/definitions/oldschoolrs.Price'
+        type: array
+    type: object
+  oldschoolrs.Price:
+    properties:
+      timestamp:
+        type: string
+      value:
+        type: number
+    type: object
+  service.RunescapeItem:
+    properties:
+      price_history:
+        $ref: '#/definitions/oldschoolrs.ItemPriceRecord'
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/items/{id}/price:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint to get OSRS Item by ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Runescape Item Price
+          schema:
+            $ref: '#/definitions/service.RunescapeItem'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Provides an endpoint to get OSRS Item by ID
+swagger: "2.0"

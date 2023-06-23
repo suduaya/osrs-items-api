@@ -8,6 +8,10 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	httpswagger "github.com/swaggo/http-swagger"
+
+	// This import is necessary for swagger documentation.
+	_ "osrs-items-api/api"
 )
 
 func main() {
@@ -41,6 +45,14 @@ func main() {
 			})
 		})
 
+	router.PathPrefix("/swagger/").
+		Handler(
+			httpswagger.Handler(
+				httpswagger.DeepLinking(true),
+				httpswagger.DocExpansion("none"),
+				httpswagger.DomID("#swagger-ui"),
+			),
+		)
 	//port := os.Getenv("PORT")
 	port := "8080"
 
