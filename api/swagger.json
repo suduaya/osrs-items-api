@@ -27,7 +27,7 @@
                     "200": {
                         "description": "Runescape Item Price",
                         "schema": {
-                            "$ref": "#/definitions/service.RunescapeItem"
+                            "$ref": "#/definitions/osrs-items-api_pkg_oldschoolrs.ItemPriceRecord"
                         }
                     },
                     "400": {
@@ -44,24 +44,24 @@
         }
     },
     "definitions": {
-        "oldschoolrs.ItemPriceRecord": {
+        "osrs-items-api_pkg_oldschoolrs.ItemPriceRecord": {
             "type": "object",
             "properties": {
                 "average": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/oldschoolrs.Price"
+                        "$ref": "#/definitions/osrs-items-api_pkg_oldschoolrs.Price"
                     }
                 },
                 "daily": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/oldschoolrs.Price"
+                        "$ref": "#/definitions/osrs-items-api_pkg_oldschoolrs.Price"
                     }
                 }
             }
         },
-        "oldschoolrs.Price": {
+        "osrs-items-api_pkg_oldschoolrs.Price": {
             "type": "object",
             "properties": {
                 "timestamp": {
@@ -69,14 +69,6 @@
                 },
                 "value": {
                     "type": "number"
-                }
-            }
-        },
-        "service.RunescapeItem": {
-            "type": "object",
-            "properties": {
-                "price_history": {
-                    "$ref": "#/definitions/oldschoolrs.ItemPriceRecord"
                 }
             }
         }
