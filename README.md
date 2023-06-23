@@ -8,7 +8,7 @@ Oldschool Runescape Items API
 <img width="500" height="300" src="https://github.com/suduaya/osrs-items-api/blob/master/docs/images/ge.png?raw=true"/>
 </p>
 
-This API extracts data from OSRS Grand Exchange and OSBuddy Exchange Tool and provides all the pricing information regarding a Runescape Item.
+This API extracts data from OSRS Grand Exchange and provides all the pricing information regarding a Runescape Item.
 
 ## Supported Operations
   ```
